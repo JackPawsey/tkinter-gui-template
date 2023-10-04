@@ -1,12 +1,12 @@
 import tkinter as tk
 
 
-class Start(tk.Tk):
+class Root(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        tk.Tk.wm_title(self, "Title")
-        # tk.Tk.iconbitmap(self, default="path/to/.ico")
+        tk.Tk.wm_title(self, "App Title")
+        # tk.Tk.iconbitmap(self, default="path/to/icon.ico")
 
         container = tk.Frame(self)
 
@@ -15,20 +15,21 @@ class Start(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        self.pages = [Page1, Page2]
         self.frames = {}
-        for f in (Page1, Page2):
-            frame = f(container, self)
-            self.frames[f] = frame
+
+        for page in self.pages:
+            frame = page(container, self)
+            self.frames[page] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(Page1)
 
-    def show_frame(self, cont):
-        frame = self.frames[cont]
+    def show_frame(self, frame):
+        frame = self.frames[frame]
         frame.tkraise()
 
 
-# Loading page
 class Page1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -41,7 +42,6 @@ class Page1(tk.Frame):
         abutton.pack()
 
 
-# Main page
 class Page2(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -50,7 +50,5 @@ class Page2(tk.Frame):
         label.pack()
 
 
-app = Start()
-# app.resizable(width=False, height=False)
-app.state("zoomed")
+app = Root()
 app.mainloop()
